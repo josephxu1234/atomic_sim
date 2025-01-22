@@ -1,0 +1,90 @@
+{
+  "nodes": [
+    {
+      "id": "f97033f1-58c5-44aa-97a1-309c7ed33db5",
+      "x": -577.3109007597889,
+      "y": -389.2323477645119,
+      "label": "s"
+    },
+    {
+      "id": "d5eb0a2b-2a13-400a-a0bf-f3bd59933d97",
+      "x": -582,
+      "y": -400.875,
+      "label": "v"
+    },
+    {
+      "id": "73264064-bfb8-4827-8258-23529f847744",
+      "x": 63.06453735776114,
+      "y": 81.50394772535185,
+      "label": "t"
+    },
+    {
+      "id": "bcff6105-3005-4eae-8086-7180595ba7ca",
+      "x": -161.60957163413576,
+      "y": -8.619694987931098,
+      "label": "w"
+    }
+  ],
+  "edges": [
+    {
+      "from": "f97033f1-58c5-44aa-97a1-309c7ed33db5",
+      "to": "d5eb0a2b-2a13-400a-a0bf-f3bd59933d97",
+      "label": "3*x**2",
+      "latencyFunction": "3*x**2",
+      "arrows": "to",
+      "id": "8d33bc6a-6ead-4e9b-bee9-bcb57d02e47a"
+    },
+    {
+      "from": "d5eb0a2b-2a13-400a-a0bf-f3bd59933d97",
+      "to": "73264064-bfb8-4827-8258-23529f847744",
+      "label": "x**2 + 44",
+      "latencyFunction": "x**2 + 44",
+      "arrows": "to",
+      "id": "6b5fb5cc-1d44-4a1b-8857-d457917a0bfc"
+    },
+    {
+      "from": "f97033f1-58c5-44aa-97a1-309c7ed33db5",
+      "to": "73264064-bfb8-4827-8258-23529f847744",
+      "label": "47 * x",
+      "latencyFunction": "47 * x",
+      "arrows": "to",
+      "id": "db23e628-32fa-4040-9669-f8292757e016"
+    },
+    {
+      "from": "f97033f1-58c5-44aa-97a1-309c7ed33db5",
+      "to": "bcff6105-3005-4eae-8086-7180595ba7ca",
+      "label": "x + 33",
+      "latencyFunction": "x + 33",
+      "arrows": "to",
+      "id": "2e2c0363-1dae-44a4-a4db-503a08c0d611"
+    },
+    {
+      "from": "bcff6105-3005-4eae-8086-7180595ba7ca",
+      "to": "73264064-bfb8-4827-8258-23529f847744",
+      "label": "13 * x",
+      "latencyFunction": "13 * x",
+      "arrows": "to",
+      "id": "f904c50f-b01f-4eb5-8940-d8c4dc763f2d"
+    },
+    {
+      "from": "d5eb0a2b-2a13-400a-a0bf-f3bd59933d97",
+      "to": "bcff6105-3005-4eae-8086-7180595ba7ca",
+      "label": "6 * x**2",
+      "latencyFunction": "6 * x**2",
+      "arrows": "to",
+      "id": "c517100f-3707-4428-8d5e-a32d4b8c08fd"
+    }
+  ],
+  "sourceSinkPairs": [
+    {
+      "source": "f97033f1-58c5-44aa-97a1-309c7ed33db5",
+      "sink": "73264064-bfb8-4827-8258-23529f847744",
+      "demand": 1
+    },
+    {
+      "source": "f97033f1-58c5-44aa-97a1-309c7ed33db5",
+      "sink": "73264064-bfb8-4827-8258-23529f847744",
+      "demand": "2"
+    }
+  ]
+}

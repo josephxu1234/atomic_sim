@@ -1,0 +1,89 @@
+// src/components/Graph.js
+
+import React, { useRef, useEffect } from 'react';
+import { Network } from 'react-vis-network';
+
+const Graph = ({ nodes, edges, setNodes, setEdges }) => {
+  const networkRef = useRef(null);
+
+  // Function to handle adding nodes and edges
+  const handleNetworkEvents = {
+    selectNode: (params) => {
+      // Handle node selection
+    },
+    doubleClick: (params) => {
+      // Handle double-click events, e.g., editing nodes or edges
+    },
+    // Add more event handlers as needed
+  };
+
+  return (
+    <div style={{ height: '600px', border: '1px solid lightgray' }}>
+      <Network
+        ref={networkRef}
+        data={{ nodes, edges }}
+        options={{
+          manipulation: {
+            enabled: true,
+            addNode: (data, callback) => {
+              const label = prompt('Enter node label:', 'node');
+              if (label !== null) {
+                data.label = label;
+                callback(data);
+                setNodes((prevNodes) => [...prevNodes, data]);
+              }
+            },
+            addEdge: (data, callback) => {
+              if (data.from === data.to) {
+                if (!window.confirm('Do you want to connect the node to itself?')) {
+                  callback(null);
+                  return;
+                }
+              }
+              const latency = prompt('Enter latency function for this edge (e.g., x, x^2, 2x+1):', 'x');
+              if (latency !== null) {
+                data.label = latency;
+                data.latencyFunction = latency;
+                data.arrows = 'to';
+                callback(data);
+                setEdges((prevEdges) => [...prevEdges, data]);
+              } else {
+                callback(null);
+              }
+            },
+            editEdge: (data, callback) => {
+              const latency = prompt('Edit latency function:', data.latencyFunction || 'x');
+              if (latency !== null) {
+                data.label = latency;
+                data.latencyFunction = latency;
+                callback(data);
+                setEdges((prevEdges) => {
+                  return prevEdges.map((edge) => (edge.id === data.id ? data : edge));
+                });
+              } else {
+                callback(null);
+              }
+            },
+          },
+          edges: {
+            arrows: {
+              to: {
+                enabled: true,
+                scaleFactor: 1,
+                type: 'arrow',
+              },
+            },
+            smooth: {
+              enabled: true,
+              type: 'dynamic',
+            },
+          },
+        }}
+        events={handleNetworkEvents}
+      />
+    </div>
+  );
+};
+
+export default Graph;
+
