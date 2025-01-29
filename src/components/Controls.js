@@ -1,8 +1,15 @@
 // src/components/Controls.js
 
-import React from 'react';
+import React from "react";
+import { useState } from "react";
 
-const Controls = ({ saveGraph, loadGraph, clearGraph, calculateFlows}) => {
+const Controls = ({
+  saveGraph,
+  loadGraph,
+  clearGraph,
+  setMode,
+  calculateFlows,
+}) => {
   const fileInputRef = React.useRef();
 
   const handleFileUpload = (event) => {
@@ -16,17 +23,32 @@ const Controls = ({ saveGraph, loadGraph, clearGraph, calculateFlows}) => {
     fileInputRef.current.click();
   };
 
+  const options = ["Brute Force", "Mixed"];
+
+  const [controlMode, setControlMode] = useState("Brute Force");
+
   return (
-    <div id="controls" style={{ marginTop: '10px' }}>
+    <div id="controls" style={{ marginTop: "10px" }}>
       <button onClick={saveGraph}>Save Graph</button>
       <button onClick={triggerFileSelect}>Load Graph</button>
-      <button onClick={calculateFlows}> Calculate Flows </button>
+      <button onClick={calculateFlows[controlMode]}> Calculate Flows </button>
+      <select
+        onChange={(e) => {
+          setMode(e.target.value);
+          setControlMode(e.target.value);
+        }}
+        defaultValue={"Brute Force"}
+      >
+        {options.map((option, idx) => (
+          <option key={idx}>{option}</option>
+        ))}
+      </select>
       <button onClick={clearGraph}>Clear Graph</button>
       <input
         type="file"
         accept=".txt"
         ref={fileInputRef}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         onChange={handleFileUpload}
       />
     </div>
@@ -34,4 +56,3 @@ const Controls = ({ saveGraph, loadGraph, clearGraph, calculateFlows}) => {
 };
 
 export default Controls;
-

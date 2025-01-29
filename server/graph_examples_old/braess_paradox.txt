@@ -1,0 +1,82 @@
+{
+  "nodes": [
+    {
+      "id": "9c0fb1f3-5ead-4efb-81fe-4e010315be27",
+      "x": -415,
+      "y": 37.125,
+      "label": "s"
+    },
+    {
+      "id": "c5099898-39d5-4178-a488-6dcdda311088",
+      "x": -150,
+      "y": 54.125,
+      "label": "t"
+    },
+    {
+      "id": "1456ceaa-39da-421d-9eef-ebd1c0975100",
+      "x": -257.277587890625,
+      "y": -58.375,
+      "label": "v"
+    },
+    {
+      "id": "e365c756-905d-42b6-ad8a-f038f89de2aa",
+      "x": -9.11470281018785,
+      "y": 117.9947018257335,
+      "label": "w"
+    }
+  ],
+  "edges": [
+    {
+      "from": "9c0fb1f3-5ead-4efb-81fe-4e010315be27",
+      "to": "1456ceaa-39da-421d-9eef-ebd1c0975100",
+      "label": "x",
+      "latencyFunction": "x",
+      "arrows": "to",
+      "id": "d8012747-a8b7-49ce-a866-c70f0f2fe171"
+    },
+    {
+      "from": "1456ceaa-39da-421d-9eef-ebd1c0975100",
+      "to": "c5099898-39d5-4178-a488-6dcdda311088",
+      "label": "2",
+      "latencyFunction": "2",
+      "arrows": "to",
+      "id": "74ef7756-2de7-4b8f-bebe-a9ee4303256a"
+    },
+    {
+      "from": "9c0fb1f3-5ead-4efb-81fe-4e010315be27",
+      "to": "e365c756-905d-42b6-ad8a-f038f89de2aa",
+      "label": "2",
+      "latencyFunction": "2",
+      "arrows": "to",
+      "id": "faf8a3ea-0061-48ec-b065-f3873efbd164"
+    },
+    {
+      "from": "e365c756-905d-42b6-ad8a-f038f89de2aa",
+      "to": "c5099898-39d5-4178-a488-6dcdda311088",
+      "label": "x",
+      "latencyFunction": "x",
+      "arrows": "to",
+      "id": "e6564ed0-5655-45a9-b196-c8ca0489c7d2"
+    },
+    {
+      "from": "1456ceaa-39da-421d-9eef-ebd1c0975100",
+      "to": "e365c756-905d-42b6-ad8a-f038f89de2aa",
+      "label": "0",
+      "latencyFunction": "0",
+      "arrows": "to",
+      "id": "95c3f3d2-cc7b-49b1-a219-d9b1f4f29285"
+    }
+  ],
+  "sourceSinkPairs": [
+    {
+      "source": "9c0fb1f3-5ead-4efb-81fe-4e010315be27",
+      "sink": "c5099898-39d5-4178-a488-6dcdda311088",
+      "demand": 1
+    },
+    {
+      "source": "9c0fb1f3-5ead-4efb-81fe-4e010315be27",
+      "sink": "c5099898-39d5-4178-a488-6dcdda311088",
+      "demand": 1
+    }
+  ]
+}

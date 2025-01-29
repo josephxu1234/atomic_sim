@@ -2,7 +2,7 @@ import React from 'react';
 
 const SourceSinkForm = ({ nodes, sourceSinkPairs, setSourceSinkPairs }) => {
   const addPair = () => {
-    setSourceSinkPairs([...sourceSinkPairs, { source: '', sink: '', demand: 1 }]);
+    setSourceSinkPairs([...sourceSinkPairs, { source: '', sink: '', numPlayers: 1 }]);
   };
 
   const removePair = (index) => {
@@ -51,12 +51,12 @@ const SourceSinkForm = ({ nodes, sourceSinkPairs, setSourceSinkPairs }) => {
             </select>
           </label>
           <label>
-            Demand:
+            Num Players:
             <input
               type="number"
               min="1"
-              value={pair.demand}
-              onChange={(e) => handleChange(index, 'demand', e.target.value)}
+              value={pair.numPlayers}
+              onChange={(e) => handleChange(index, 'numPlayers', e.target.value)}
               style={{ width: '60px' }}
             />
           </label>
