@@ -1,9 +1,15 @@
 # server.py
 
+import import_ipynb
+import brute_force
+import mixed2
+from routing_game_utils import json_to_atomic_instance
+
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
-import os
+
 
 # packages required for graph calculations
 import networkx as nx
@@ -98,48 +104,43 @@ def simulate_atomic(G: nx.DiGraph, source_sink_pairs: List[Tuple[int, int]], dem
     return paths, equil_flows, best_flow, min_total_latency
 
 
-def json_to_atomic_instance(graph_json):
-    if isinstance(graph_json, str):
-        with open(graph_json) as f:
-            graph = json.load(f)
-    elif not isinstance(graph_json, dict):
-        raise Exception('Invalid graph json type. Either requires string of a filename or a json object')
-    graph = graph_json
-    id_to_label = {}
-    for node in graph['nodes']:
-        print(node)
-        id_to_label[node['id']] = node['label']
-    G = nx.DiGraph()
-    latency_functions = {}
-    for edge in graph['edges']:
-        from_node = id_to_label[edge['from']]
-        to_node = id_to_label[edge['to']]
-        G.add_edge(from_node, to_node)
-        latency_functions[(from_node, to_node)] = eval('lambda x: ' + edge['latencyFunction'])
-    source_sink_pairs = []
-    demands = []
-    for source_sink_pair in graph['sourceSinkPairs']:
-        source_node = id_to_label[source_sink_pair['source']]
-        sink_node = id_to_label[source_sink_pair['sink']]
-        demand = int(source_sink_pair['demand'])
-        source_sink_pairs.append((source_node, sink_node))
-        demands.append(demand)
-        
-    print(latency_functions)
-    return (G, source_sink_pairs, demands, latency_functions)
-
 @app.route('/calculateFlows', methods=['POST'])
 def calculate_flows():
     graph_data = request.get_json()
     try:
         print(graph_data)
-        G, source_sink_pairs, demands, latency_functions = json_to_atomic_instance(graph_data)
-        paths, equil_flows, best_flow, min_total_latency = simulate_atomic(G, source_sink_pairs, demands, latency_functions)
+        G, source_sink_pairs, latency_functions = json_to_atomic_instance(graph_data)
+        print('converted from json to atomic')
+        paths, equil_flows, best_flow, min_total_latency = brute_force.brute_force(G, source_sink_pairs, latency_functions)
         return jsonify({
             'paths': paths,
             'equilFlows': equil_flows,
             'bestFlow': best_flow,
             'minTotalLatency': min_total_latency
+        })
+    except Exception as e:
+        print('Error calculating equilibrium and optimal flows:', e)
+        return jsonify({'message': 'Error calculating equilibrium and optimal flows.'}), 500
+    
+
+@app.route('/calculateFlowsMixed', methods=['POST'])
+def calculate_flows_mixed():
+    graph_data = request.get_json()
+    try:
+        print(graph_data)
+        G, source_sink_pairs, latency_functions = json_to_atomic_instance(graph_data)
+        print('converted from json to atomic')
+        
+        marginal_cost_pricing = False
+        paths, probabilties_profile = mixed2.mixed(G, source_sink_pairs, latency_functions, 20000, .02, marginal_cost_pricing)
+        flow = mixed2.argmax_flow(probabilties_profile)
+        f_e, player_latencies, total_latency = mixed2.calculate_edge_flows(paths, flow, latency_functions)
+
+        return jsonify({
+            'paths': paths,
+            'probabilitiesProfile': probabilties_profile,
+            'argmaxFlow': flow,
+            'totalLatency': total_latency
         })
     except Exception as e:
         print('Error calculating equilibrium and optimal flows:', e)

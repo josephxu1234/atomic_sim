@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "b1e9fa80-a8fd-4075-af99-c1cce596c98f",
+      "x": -262.53997682502893,
+      "y": 23.886152954808807,
+      "label": "s"
+    },
+    {
+      "id": "1b9e4f9e-aff9-45d9-bbdc-22a54b376d10",
+      "x": -28,
+      "y": 36.125,
+      "label": "t"
+    },
+    {
+      "id": "ca3986df-8a18-450d-b26a-09fe6a23551e",
+      "x": -170.71720878330063,
+      "y": -69.40788008101157,
+      "label": "v"
+    },
+    {
+      "id": "4417e2a0-f290-4f35-be50-8ec4900f46d6",
+      "x": -173.777587890625,
+      "y": 103.625,
+      "label": "w"
+    }
+  ],
+  "edges": [
+    {
+      "id": "0632ed4e-05f3-4a55-ac1a-acbaf5a9399a",
+      "from": "b1e9fa80-a8fd-4075-af99-c1cce596c98f",
+      "to": "ca3986df-8a18-450d-b26a-09fe6a23551e",
+      "label": "10",
+      "latencyFunction": "10"
+    },
+    {
+      "from": "ca3986df-8a18-450d-b26a-09fe6a23551e",
+      "to": "1b9e4f9e-aff9-45d9-bbdc-22a54b376d10",
+      "label": "x",
+      "latencyFunction": "x",
+      "arrows": "to",
+      "id": "3d687f35-7032-41c7-92bb-525fab89fe5b"
+    },
+    {
+      "from": "b1e9fa80-a8fd-4075-af99-c1cce596c98f",
+      "to": "4417e2a0-f290-4f35-be50-8ec4900f46d6",
+      "label": "x",
+      "latencyFunction": "x",
+      "arrows": "to",
+      "id": "7b36f27c-e446-4afa-8518-9767e35e73ad"
+    },
+    {
+      "from": "4417e2a0-f290-4f35-be50-8ec4900f46d6",
+      "to": "1b9e4f9e-aff9-45d9-bbdc-22a54b376d10",
+      "label": "10",
+      "latencyFunction": "10",
+      "arrows": "to",
+      "id": "8b7b7b75-fe87-4700-bc5d-e10745be569b"
+    },
+    {
+      "from": "ca3986df-8a18-450d-b26a-09fe6a23551e",
+      "to": "4417e2a0-f290-4f35-be50-8ec4900f46d6",
+      "label": "0",
+      "latencyFunction": "0",
+      "arrows": "to",
+      "id": "99953037-4dd2-46f7-9e99-a30c2bec83ef"
+    }
+  ],
+  "sourceSinkPairs": [
+    {
+      "source": "b1e9fa80-a8fd-4075-af99-c1cce596c98f",
+      "sink": "1b9e4f9e-aff9-45d9-bbdc-22a54b376d10",
+      "numPlayers": "10"
+    }
+  ]
+}
