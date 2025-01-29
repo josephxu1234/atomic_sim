@@ -42,6 +42,8 @@ def json_to_atomic_instance(graph_json, verbose=False):
             graph = json.load(f)
     elif not isinstance(graph_json, dict):
         raise Exception('Invalid graph json type. Either requires string of a filename or a json object')
+    else:
+        graph = graph_json
     id_to_label = {}
     for node in graph['nodes']:
         if verbose:
@@ -54,27 +56,23 @@ def json_to_atomic_instance(graph_json, verbose=False):
         to_node = id_to_label[edge['to']]
         G.add_edge(from_node, to_node)
 
-        # f1 = eval('lambda x: ' + edge['latencyFunction'])
-
         x = sp.symbols('x')
         expression = sp.sympify(edge['latencyFunction'])
         f = sp.lambdify(x, expression)
-        f_prime = sp.lambdify(x, sp.diff(expression, x))
-        # f2 = get_derivative_function(edge['latencyFunction'], variable='x')
+        f_prime = sp.lambdify(x, sp.diff(expression, x)) # derivative of latency function
         latency_functions[(from_node, to_node)] = [f, f_prime]
     source_sink_pairs = []
-    demands = []
+
     for source_sink_pair in graph['sourceSinkPairs']:
-        source_node = id_to_label[source_sink_pair['source']]
-        sink_node = id_to_label[source_sink_pair['sink']]
-        demand = int(source_sink_pair['demand'])
-        source_sink_pairs.append((source_node, sink_node))
-        demands.append(demand)
+        for _ in range(int(source_sink_pair['numPlayers'])):
+            source_node = id_to_label[source_sink_pair['source']]
+            sink_node = id_to_label[source_sink_pair['sink']]
+            source_sink_pairs.append((source_node, sink_node))
         
-    nx.draw_networkx(G)
+    # nx.draw_networkx(G)
     if verbose:
         print(latency_functions)
-    return (G, source_sink_pairs, demands, latency_functions)
+    return (G, source_sink_pairs, latency_functions)
 
 
 # given an expr string that can be evaluated with sympy
@@ -114,7 +112,7 @@ def get_strategy_sets(G, source_sink_pairs):
 # demands: each index represents a player, the value at that index represents how many units of traffic that player is routing
 
 # return a dictionary of edge flows, an array of player latencies, and the total latency across all players
-def calculate_edge_flows(paths, flow, demands, latency_functions):
+def calculate_edge_flows(paths, flow, latency_functions):
     f_e = {}  # Edge flows. key is an edge (represented as a tuple between 2 vertices), value is the flow (units of traffic on that edge)
     # go through each player and their choice of path
 
@@ -122,7 +120,7 @@ def calculate_edge_flows(paths, flow, demands, latency_functions):
     
     for player_idx, path_idx in enumerate(flow): # go thru each player and their chosen path
         path = paths[player_idx][path_idx] # get the path that the player is taking
-        demand = demands[player_idx]
+        demand = 1 # treat each player as routing 1 unit of traffic
         
         for i in range(len(path) - 1): # route through that player's path
             edge = (path[i], path[i + 1])
@@ -142,7 +140,7 @@ def calculate_edge_flows(paths, flow, demands, latency_functions):
     total_latency = sum(player_latencies)
     return f_e, player_latencies, total_latency
 
-def calculate_edge_flows_taxed(paths, flow, demands, latency_functions, sensitivities=None):
+def calculate_edge_flows_taxed(paths, flow, latency_functions, sensitivities=None):
     f_e = {}  # Edge flows. key is an edge (represented as a tuple between 2 vertices), value is the flow (units of traffic on that edge)
     # go through each player and their choice of path
 
@@ -150,7 +148,7 @@ def calculate_edge_flows_taxed(paths, flow, demands, latency_functions, sensitiv
     
     for player_idx, path_idx in enumerate(flow): # go thru each player and their chosen path
         path = paths[player_idx][path_idx] # get the path that the player is taking
-        demand = demands[player_idx]
+        demand = 1 # treat each player as routing 1 unit of traffic
         
         for i in range(len(path) - 1): # route through that player's path
             edge = (path[i], path[i + 1])
